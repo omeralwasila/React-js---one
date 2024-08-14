@@ -1,9 +1,18 @@
+import { useState } from "react";
 import { CORE_CONCEPTS } from "./data";
 import Header from "./Components/Header.jsx";
 import CoreConcepts from "./Components/CoreConcept.jsx";
 import TabButton from "./Components/TabButton.jsx";
+import { EXAMPLES } from "./data";
 
 function App() {
+  const [selectTopic, setSelectTopic] = useState("components");
+
+  function handelSelect(selectButton) {
+    setSelectTopic(selectButton);
+    console.log(selectTopic);
+  }
+
   return (
     <div>
       <Header />
@@ -11,32 +20,46 @@ function App() {
         <section id="core-concepts">
           <h2>Core Concepts</h2>
           <ul>
-            <CoreConcepts
-              title={CORE_CONCEPTS[0].title}
-              description={CORE_CONCEPTS[0].description}
-              image={CORE_CONCEPTS[0].image}
-            />
-            <CoreConcepts
-              title={CORE_CONCEPTS[1].title}
-              description={CORE_CONCEPTS[1].description}
-              image={CORE_CONCEPTS[1].image}
-            />
-            <CoreConcepts
-              title={CORE_CONCEPTS[2].title}
-              description={CORE_CONCEPTS[2].description}
-              image={CORE_CONCEPTS[2].image}
-            />
-            <CoreConcepts {...CORE_CONCEPTS[3]} />
+            {CORE_CONCEPTS.map((Item) => (
+              <CoreConcepts key={Item.title} {...Item} />
+            ))}
           </ul>
         </section>
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton>Component</TabButton>
-            <TabButton>Jsx</TabButton>
-            <TabButton>Props</TabButton>
-            <TabButton>State</TabButton>
+            <TabButton
+              isSelected={selectTopic === "components"}
+              onSelect={() => handelSelect("components")}
+            >
+              Component
+            </TabButton>
+            <TabButton
+              isSelected={selectTopic === "jsx"}
+              onSelect={() => handelSelect("jsx")}
+            >
+              Jsx
+            </TabButton>
+            <TabButton
+              isSelected={selectTopic === "props"}
+              onSelect={() => handelSelect("props")}
+            >
+              Props
+            </TabButton>
+            <TabButton
+              isSelected={selectTopic === "state"}
+              onSelect={() => handelSelect("state")}
+            >
+              State
+            </TabButton>
           </menu>
+          <div id="tab-content">
+            <h3>{EXAMPLES[selectTopic].title}</h3>
+            <p>{EXAMPLES[selectTopic].description}</p>
+            <pre>
+              <code>{EXAMPLES[selectTopic].code}</code>
+            </pre>
+          </div>
         </section>
       </main>
     </div>
